@@ -27,11 +27,15 @@ userRouter.post('/signUp', async (req, res) => {
     })
 })
 userRouter.post('/signIn', (req, res) => {
-
+    res.json({
+        message:"signin endpoint"
+    })
 })
 
 userRouter.get('/courses', (req, res) => {
-
+    res.json({
+        message:"list"
+    })
 })
 
 module.exports={

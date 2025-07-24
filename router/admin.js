@@ -1,21 +1,28 @@
 const express=require('express')
-
+const Router=express.Router
+const adminRouter=Router()
 const app=express()
 
-app.post('adminSignUp',(req,res)=>{
+adminRouter.post('/signUp',(req,res)=>{
+res.json({
+    message:"hello"
+})
+})
+
+adminRouter.post('/signIn',(req,res)=>{
 
 })
 
-app.post('adminLogIn',(req,res)=>{
+adminRouter.put('/addCourse',(req,res)=>{
 
 })
-
-app.put('createCourse',(req,res)=>{
-
-})
-app.delete('deleteCource',(req,res)=>{
+adminRouter.delete('/delCourse',(req,res)=>{
 
 })
-app.get('listAllcourse',(req,res)=>{
+adminRouter.get('/lsit',(req,res)=>{
     
 })
+
+module.exports={
+    adminRouter:adminRouter
+}
