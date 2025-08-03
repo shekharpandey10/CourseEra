@@ -1,9 +1,9 @@
 const express=require('express')
 const Router=express.Router
-const {userRouter}=require("./router/user")
+const {userRouter}=require("../router/user")
     
-const {courseRouter}=require('./router/course')
-const {adminRouter}=require('./router/admin')
+const {courseRouter}=require('../router/course')
+const {adminRouter}=require('../router/admin')
 const app=express()
 
 app.use('/user',userRouter)
