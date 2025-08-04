@@ -1,5 +1,6 @@
 const express = require('express')
 const { userModel } = require('../db/userdb')
+const {validInput,userAuth}=require('../middleware/userLoginAuth')
 const { z } = require('zod')
 const { model } = require('mongoose')
 
@@ -68,17 +69,7 @@ userRouter.post('/signup',userValid,async(req,res,next)=>{
 })
 
 
-userRouter.post('/signIn', async(req, res) => {
-    const {username,password}=req.body
-    try{
-        const resp=await userModel.findOne({username:username})
-        console.log(resp)
-    }catch(e){
-        res.json({
-            msg:[],
-            error:e
-        })
-    }
+userRouter.post('/login',validInput,userAuth, async(req, res) => {
     res.json({
         message:"signin endpoint"
     })
