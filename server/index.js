@@ -15,7 +15,7 @@ app.use('/api/v1/admin',adminRouter)
 
 async function main (){
    try{
-     await mongoose.connect(process.env.MONGO_URL)
+     await mongoose.connect(process.env.MONGO_URL, {})
    }catch(e){
     throw new Error("database connection failed")
    }

@@ -2,6 +2,8 @@ const express = require('express')
 const { userModel } = require('../db/userdb')
 const {validInput,userAuth}=require('../middleware/userLoginAuth')
 const { z } = require('zod')
+const jwt=require('jsonwebtoken')
+const bcrypt=require('bcrypt')
 const { model } = require('mongoose')
 
 const Router = express.Router
@@ -51,9 +53,10 @@ userRouter.post('/signup',userValid,async(req,res,next)=>{
 }, async (req, res) => {
    const {username,password,firstname,lastname}=req.body
     try{
+        const hasedPass=await bcrypt.hash(password,5)
          await userModel.create({
         username:username,
-        password:password,
+        password:hasedPass,
         firstname:firstname,
         lastname:lastname
     })
@@ -70,9 +73,27 @@ userRouter.post('/signup',userValid,async(req,res,next)=>{
 
 
 userRouter.post('/login',validInput,userAuth, async(req, res) => {
-    res.json({
-        message:"signin endpoint"
-    })
+    const {username,password}=req.body
+        try{
+           const match=await bcrypt.compare(password,req.Hashedpassword)
+           if(match){
+                const token=await jwt.sign(username,process.env.USER_SECRET)
+                res.json({
+                    token:token,
+                    msg:"signIn sucessfully"
+                })
+           }else{
+            res.json({
+                msg:"signIn failed"
+            })
+           }
+        }catch(e){
+            res.json({
+                data:[],
+                error:e
+            })
+        }
+   
 })
 
 userRouter.get('/courses', (req, res) => {

@@ -1,11 +1,11 @@
 const {z}=require('zod')
-const { use } = require('react')
 const { userModel } = require('../db/userdb')
+
 
 
 const validInput = async (req, res, next) => {
     const user = z.object({
-        username: email(),
+        username: z.email(),
         password: z.string().min(8)
     })
     const { username, password } = req.body
@@ -29,11 +29,14 @@ const userAuth = async (req, res, next) => {
     try {
         const user = await userModel.findOne({ username: username })
         console.log(user)
-        if(user)
-        next()
+        if(user){
+           req.Hashedpassword=user.password
+           next()
+        }
         else{
             res.json({
-                msg:"Incorrect credintials"
+                msg:"Incorrect credintials",
+                
             })
         }
     } catch (e) {
@@ -43,4 +46,9 @@ const userAuth = async (req, res, next) => {
         })
     }
 
+}
+
+module.exports={
+    userAuth:userAuth,
+    validInput:validInput
 }

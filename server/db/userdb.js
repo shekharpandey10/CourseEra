@@ -1,4 +1,6 @@
 const mongoose=require('mongoose')
+const { number } = require('zod')
+const { fi } = require('zod/locales')
 const Schema=mongoose.Schema
 const ObjectId=mongoose.ObjectId
 
@@ -11,12 +13,18 @@ const user=new Schema({
 })
 
 const admin=new Schema({
-    Email:{type:String,unique:true},
+    adminId:ObjectId,
+    username:{type:String,unique:true},
     password:String,
+    firstname:String,
+    lastname:String
 })
 
 const course=new Schema({
     courseName:String,
+    desc:String,
+    videoUrl:String,
+    coursePrice:number,
     adminId:{type:Schema.Types.ObjectId, ref:'admin'}
 })
 
