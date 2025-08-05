@@ -23,6 +23,7 @@ const admin=new Schema({
 const course=new Schema({
     courseName:String,
     desc:String,
+    isActive:Boolean,
     videoUrl:String,
     coursePrice:number,
     adminId:{type:Schema.Types.ObjectId, ref:'admin'}

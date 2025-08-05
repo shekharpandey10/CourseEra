@@ -76,9 +76,8 @@ const authAdmin=async(req,res,next)=>{
 }
 
 const tokenAuth=async(req,res,next)=>{
-   const token= req.headers.authorization.split(' ')[1]
-  console.log(token)
-  try{
+    try{
+      const token= req.headers.authorization.split(' ')[1]
     const result=await jwt.verify(token,process.env.ADMIN_SECRET)
     if(result){
         req.adminId=await jwt.decode(token)

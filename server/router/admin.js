@@ -74,7 +74,7 @@ adminRouter.post('/login',validInputAdmin,authAdmin, async(req, res) => {
      }
 })
 
-adminRouter.put('/addCourse',tokenAuth,async(req, res) => {
+adminRouter.post('/addCourse',tokenAuth,async(req, res) => {
     console.log(req.body)
   const {courseName,desc,videoUrl,coursePrice}=req.body
   console.log('hii')
@@ -83,6 +83,7 @@ adminRouter.put('/addCourse',tokenAuth,async(req, res) => {
         courseName:courseName,
         desc:desc,
         videoUrl:videoUrl,
+        isActive:true,
         coursePrice:coursePrice,
         adminId:req.adminId
     })
@@ -98,11 +99,52 @@ adminRouter.put('/addCourse',tokenAuth,async(req, res) => {
   }
 
 })
-adminRouter.delete('/delCourse', (req, res) => {
-
-})
-adminRouter.get('/lsit', (req, res) => {
-
+adminRouter.put('/updateCourse',tokenAuth, async(req, res) => {
+    const {courseId}=req.body
+console.log(courseId)
+    try{
+        const course=await coursesModel.findOne({_id:courseId})
+        console.log(course)
+        if(course){
+            course.isActive=false
+            console.log('hello')
+            await course.save()
+            console.log('helo')
+            res.json({
+                msg:"Course updated sucessfully"
+            })
+        }else{
+            res.json({
+                msg:"course not found"
+            })
+        }
+    }catch(e){
+        res.json({
+            data:[],
+            error:e
+        })
+    }
+})  
+adminRouter.get('/list', tokenAuth,async(req, res) => {
+    const adminId=req.adminId
+    try{
+      const course=await coursesModel.find({adminId:adminId})
+      if(course.length){
+        res.json({
+            msg:"list of course is:",
+            data:course
+        })
+      }else{
+        res.json({
+            msg:"No course found"
+        })
+      }
+    }catch(e){
+        res.json({
+            data:[],
+            error:e
+        })
+    }
 })
 
 module.exports = {
