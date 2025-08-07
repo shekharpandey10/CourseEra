@@ -100,16 +100,21 @@ adminRouter.post('/addCourse',tokenAuth,async(req, res) => {
 
 })
 adminRouter.put('/updateCourse',tokenAuth, async(req, res) => {
-    const {courseId}=req.body
-console.log(courseId)
+    const {courseId,title,isActive,videoUrl,price}=req.body
+console.log(req.body)
     try{
-        const course=await coursesModel.findOne({_id:courseId})
-        console.log(course)
+      const course=await coursesModel.updateOne({
+        _id:courseId,
+        adminId:req.adminId
+       },{
+       courseName:title,
+           desc:desc,
+           isActive:isActive,
+           videoUrl:videoUrl,
+           coursePrice:price,
+           adminId:req.adminId
+       })
         if(course){
-            course.isActive=false
-            console.log('hello')
-            await course.save()
-            console.log('helo')
             res.json({
                 msg:"Course updated sucessfully"
             })
